@@ -1,0 +1,116 @@
+<fsmddescription>
+
+  <statelist>
+    <state>INITIALIZE</state>
+    <state>COMPUTE</state>
+    <state>DIVISIBLE</state>
+    <state>FALSE</state>
+    <state>FINISH</state>
+  </statelist>
+
+  <initialstate>INITIALIZE</initialstate>
+
+  <inputlist>
+    <input>in_a</input>
+    <input>in_b</input>
+  </inputlist>
+
+  <variablelist>
+    <variable>var_a</variable>
+    <variable>var_b</variable>
+  </variablelist>
+
+  <operationlist>
+    <operation>
+      <name>init_a</name>
+      <expression>var_a = in_a</expression>
+    </operation>
+    <operation>
+      <name>init_b</name>
+      <expression>var_b = in_b</expression>
+    </operation>
+    <operation>
+      <name>decrease_a_by_1</name>
+      <expression>var_a = var_a - 1</expression>
+    </operation>
+    <operation>
+      <name>increase_a_by_1</name>
+      <expression>var_a = var_a + 1</expression>
+    </operation>
+     <operation>
+      <name>b_divisibleby_a</name>
+      <expression>NOP</expression>
+    </operation>
+     <operation>
+      <name>false</name>
+      <expression>var_a = False</expression>
+    </operation>
+     <operation>
+      <name>yesdivisible</name>
+      <expression>var_a = True</expression>
+    </operation>
+     <operation>
+      <name>notdivisible</name>
+      <expression>var_a = False </expression>
+    </operation>
+    </operationlist>
+
+  <conditionlist>
+    <condition>
+      <name>b_notdivisby_a</name>
+      <expression>var_b % var_a &gt; 0</expression>
+    </condition>
+        <condition>
+      <name>b_divisibleby_a</name>
+      <expression>var_b % var_a == 0</expression>
+    </condition>
+  </conditionlist>
+
+  <fsmd>
+    <INITIALIZE>
+      <transition>
+        <condition>True</condition>
+        <instruction>init_b init_a</instruction>
+        <nextstate>COMPUTE</nextstate>
+      </transition>
+    </INITIALIZE>
+
+    <COMPUTE>
+      <transition>
+        <condition>b_notdivisby_a</condition>
+        <instruction>increase_a_by_1</instruction>
+        <nextstate>COMPUTE</nextstate>
+      </transition>
+      <transition>
+        <condition>b_divisibleby_a</condition>
+        <instruction>NOP</instruction>
+        <nextstate>DIVISIBLE</nextstate>
+      </transition>
+    </COMPUTE>
+
+    <DIVISIBLE>
+      <transition>
+        <condition>b_divisibleby_a</condition>
+        <instruction>NOP</instruction>
+        <nextstate>FINISH</nextstate>
+      </transition>
+    </DIVISIBLE>
+    
+    <FALSE>
+      <transition>
+        <condition>True</condition>
+        <instruction>false</instruction>
+        <nextstate>FINISH</nextstate>
+      </transition>
+    </FALSE>
+
+    <FINISH>
+      <transition>
+        <condition>True</condition>
+        <instruction>NOP</instruction>
+        <nextstate>FINISH</nextstate>
+      </transition>
+    </FINISH>
+  </fsmd>
+
+</fsmddescription>
